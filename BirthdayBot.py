@@ -12,7 +12,7 @@ intents.members = True
 
 client = discord.Client(intents=intents)
 
-# Birthday Basics
+
 def get_birthdays():
     event_file = open('events.txt', 'r')
     content = event_file.readlines()
@@ -25,13 +25,15 @@ def get_birthdays():
 
     for x in range(len(birthdays)):
         birthdays[x][1] = int(birthdays[x][1])
-    
+
     event_file.close()
     birthdays.sort()
 
     return birthdays
 
+
 birthdays = get_birthdays()
+
 
 def get_time_until_midnight():
     # Finds the exact time the bot starts and turns the hours, minutes, and seconds into integers
@@ -50,6 +52,8 @@ def get_time_until_midnight():
     return until_midnight
 
 # Discord - Birthday interaction
+
+
 @client.event
 async def on_ready():
     print(f'We have logged in as {client.user}')
@@ -58,13 +62,14 @@ async def on_ready():
     await asyncio.sleep(get_time_until_midnight())
     nightly.start()
 
+
 @client.event
 async def on_message(message):
     guild = client.get_guild(GUILD)
-        
+
     if message.author == client.user:
         return
-    
+
     if message.content == ('!help'):
         await commands.print_help(message)
 
@@ -73,10 +78,10 @@ async def on_message(message):
 
     if message.content == ('!birth list'):
         await commands.birth_list(birthdays, guild, message)
-    
+
     if message.content.startswith('!countdown'):
         await commands.countdown(message, guild, birthdays)
-    
+
     if message.content == ('!last'):
         await commands.get_last(guild, message, birthdays)
 
@@ -88,9 +93,10 @@ async def on_message(message):
 
     if message.content.startswith('!today'):
         await message.channel.send(get_today())
-    
+
     if message.content.startswith('!tomorrow'):
         await message.channel.send(get_tomorrow())
+
 
 @tasks.loop(hours=24)
 async def nightly():
@@ -101,7 +107,8 @@ async def nightly():
             guild = client.get_guild(1050882015207104625)
             user = guild.get_member_named(birthday[0])
             await channel.send('Happy Birthday ' + user.mention + '!')
-    
+
+
 def get_today():
     # Gets today based on the time shift at midnight
     today = date.today()
@@ -109,18 +116,21 @@ def get_today():
     today = today[5:7] + '/' + today[8:10]
     return today
 
+
 def get_yesterday():
     # Gets yesterday based on the time shift at midnight
-    yesterday = date.today() - timedelta(days = 1)
+    yesterday = date.today() - timedelta(days=1)
     yesterday = str(yesterday)
     yesterday = yesterday[5:7] + '/' + yesterday[8:10]
     return yesterday
 
+
 def get_tomorrow():
     # Gates tomorrow based on the time shift at midnight
-    tomorrow = date.today() + timedelta(days = 1)
+    tomorrow = date.today() + timedelta(days=1)
     tomorrow = str(tomorrow)
     tomorrow = tomorrow[5:7] + '/' + tomorrow[8:10]
     return tomorrow
+
 
 client.run(SECRET)
