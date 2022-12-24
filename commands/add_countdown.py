@@ -1,4 +1,4 @@
-from utils import days_until_birthday, days_until_birthday_reversed
+from utils import days_until_birthday, date_format_to_english
 
 
 async def countdown(message, guild, birthdays):
@@ -22,4 +22,4 @@ async def countdown(message, guild, birthdays):
             user = guild.get_member(id_)
             the_date = birthday[0]
 
-    await message.channel.send(f'{user.mention}\'s birthday is {days_until_birthday(id_, birthdays)} days away (or {days_until_birthday_reversed(id_, birthdays)} days ago) on {the_date}')
+    await message.channel.send(f'{user.mention}\'s birthday is {days_until_birthday(id_, birthdays)} days away (or {days_until_birthday(id_, birthdays, True)} days ago) on {date_format_to_english(the_date)}')

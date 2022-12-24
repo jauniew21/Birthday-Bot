@@ -1,5 +1,10 @@
 import asyncio
-import commands
+from commands.add_birthday import add_birthday
+from commands.add_countdown import countdown
+from commands.get_birthday_list import birth_list
+from commands.get_next_birthday import get_next
+from commands.get_last_birthday import get_last
+from commands.print_help import print_help
 import datetime
 import discord
 from datetime import date, datetime, timedelta
@@ -71,22 +76,22 @@ async def on_message(message):
         return
 
     if message.content == ('!help'):
-        await commands.print_help(message)
+        await print_help(message)
 
     if message.content.startswith('!add '):
-        await commands.add_birthday(message, guild, birthdays)
+        await add_birthday(message, guild, birthdays)
 
     if message.content == ('!birth list'):
-        await commands.birth_list(birthdays, guild, message)
+        await birth_list(birthdays, guild, message)
 
     if message.content.startswith('!countdown'):
-        await commands.countdown(message, guild, birthdays)
+        await countdown(message, guild, birthdays)
 
     if message.content == ('!last'):
-        await commands.get_last(guild, message, birthdays)
+        await get_last(guild, message, birthdays)
 
     if message.content == ('!next'):
-        await commands.get_next(guild, message, birthdays)
+        await get_next(guild, message, birthdays)
 
     if message.content.startswith('!yesterday'):
         await message.channel.send(get_yesterday())

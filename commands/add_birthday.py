@@ -1,4 +1,5 @@
 from datetime import date, timedelta
+from utils import date_format_to_english
 
 
 async def add_birthday(message, guild, birthdays):
@@ -51,7 +52,7 @@ async def add_birthday(message, guild, birthdays):
             return
 
     # Adding the new birthday to the event file
-    await message.channel.send(f'Birth Logged!\nI can\'t wait to wish you Happy Birthday on {new_birthday}, {user.mention}')
+    await message.channel.send(f'Birth Logged!\nI can\'t wait to wish you Happy Birthday on {date_format_to_english(new_birthday)}, {user.mention}')
     birthdays.append([new_birthday, id_])
     event_file = open('events.txt', 'w').close()
     event_file = open('events.txt', 'a+')
