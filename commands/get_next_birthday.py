@@ -1,5 +1,5 @@
 from datetime import date, timedelta
-from utils import days_until_birthday, days_until_birthday_reversed
+from utils import days_until_birthday
 
 
 async def get_next(guild, message, birthdays):
