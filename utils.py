@@ -25,5 +25,17 @@ def date_format_to_english(date):
     month, day = date.split('/')
     months = ["January", "February", "March", "April", "May", "June",
               "July", "August", "September", "October", "November", "December"]
+    
+    if day[1] == '1':
+        day += 'st'
+    elif day[1] == '2':
+        day += 'nd'
+    elif day[1] == '3':
+        day += 'rd'
+    else:
+        day += 'th'
+    
+    if day[0] == '0':
+        day = day.replace('0', '')
 
     return f"{months[int(month) - 1]} {day}"

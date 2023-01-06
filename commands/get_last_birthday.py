@@ -1,4 +1,4 @@
-from utils import days_until_birthday
+from utils import date_format_to_english, days_until_birthday
 from datetime import date, timedelta
 
 
@@ -25,4 +25,4 @@ async def get_last(guild, message, birthdays):
         '/' + highest_day_as_date[8:10]
 
     user = guild.get_member(birthday[1])
-    await message.channel.send(f'{user.name}\'s birthday is next, which was {days_until_birthday(birthday[1], birthdays, True)} days ago on {highest_day_as_date}')
+    await message.channel.send(f'{user.name}\'s birthday was last, which was {days_until_birthday(birthday[1], birthdays, True)} days ago on {date_format_to_english(highest_day_as_date)}')
