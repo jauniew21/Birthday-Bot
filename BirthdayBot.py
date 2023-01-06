@@ -63,7 +63,7 @@ def get_time_until_midnight():
 async def on_ready():
     print(f'We have logged in as {client.user}')
     channel = client.get_channel(1050913970204192848)
-    await channel.send('Birthday Bot Test')
+    await channel.send('Birthday Bot Online!')
     await asyncio.sleep(get_time_until_midnight())
     nightly.start()
 
