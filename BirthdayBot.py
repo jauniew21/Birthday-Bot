@@ -109,7 +109,7 @@ async def nightly():
 
     for birthday in birthdays:
         if birthday[1] == get_today():
-            guild = client.get_guild(1050882015207104625)
+            guild = client.get_guild(GUILD)
             user = guild.get_member_named(birthday[0])
             await channel.send('Happy Birthday ' + user.mention + '!')
 
