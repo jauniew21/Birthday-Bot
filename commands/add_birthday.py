@@ -6,7 +6,7 @@ async def add_birthday(message, guild, birthdays):
     message_list = message.content
     message_list = message_list.split(' ')
 
-    # Checking if input is valid
+    # Checking if input is valid :)
     if len(message_list) < 3:
         await message.channel.send('need to input both a user and a date, in that order, with a space between them')
         return
