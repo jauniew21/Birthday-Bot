@@ -26,11 +26,11 @@ def date_format_to_english(date):
     months = ["January", "February", "March", "April", "May", "June",
               "July", "August", "September", "October", "November", "December"]
     
-    if day[1] == '1':
+    if day[1] == '1' and day != '11':
         day += 'st'
-    elif day[1] == '2':
+    elif day[1] == '2' and day != '12':
         day += 'nd'
-    elif day[1] == '3':
+    elif day[1] == '3' and day != '13':
         day += 'rd'
     else:
         day += 'th'

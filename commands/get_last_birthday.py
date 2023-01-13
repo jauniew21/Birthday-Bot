@@ -13,6 +13,7 @@ async def get_last(guild, message, birthdays):
             continue
 
         highest_day = cur_count
+        that_user = birthday[1]
         found_birthday = birthday
 
     if found_birthday is None:
@@ -24,5 +25,5 @@ async def get_last(guild, message, birthdays):
     highest_day_as_date = highest_day_as_date[5:7] + \
         '/' + highest_day_as_date[8:10]
 
-    user = guild.get_member(birthday[1])
-    await message.channel.send(f'{user.name}\'s birthday was last, which was {days_until_birthday(birthday[1], birthdays, True)} days ago on {date_format_to_english(highest_day_as_date)}')
+    user = guild.get_member(that_user)
+    await message.channel.send(f'{user.name}\'s birthday was last, which was {days_until_birthday(that_user, birthdays, True)} days ago on {date_format_to_english(highest_day_as_date)}')
