@@ -59,7 +59,6 @@ until_midnight = FULL_DAY - get_cur_time_in_secs()
 # Finds hours, mins, and secs until 8AM
 MORNING = 28800
 until_morning = (MORNING + FULL_DAY) - get_cur_time_in_secs()
-test_time = datetime.now() + timedelta(0, until_morning)
 
 
 @client.event
@@ -69,6 +68,8 @@ async def on_ready():
     await channel.send('Birthday Bot Online!')
     await asyncio.sleep(until_midnight)
     nightly.start()
+    await asyncio.sleep(until_morning)
+    get_morning.start()
 
 
 @client.event
