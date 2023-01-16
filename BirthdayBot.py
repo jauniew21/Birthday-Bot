@@ -9,6 +9,7 @@ import datetime
 import discord
 from datetime import date, datetime, timedelta
 from discord.ext import tasks
+import random
 from secret import GUILD, SECRET
 # Discord Bot Basics
 intents = discord.Intents.default()
@@ -17,6 +18,7 @@ intents.members = True
 
 client = discord.Client(intents=intents)
 
+FULL_DAY = 86400
 
 def get_birthdays():
     event_file = open('events.txt', 'r')
@@ -39,8 +41,7 @@ def get_birthdays():
 
 birthdays = get_birthdays()
 
-
-def get_time_until_midnight():
+def get_cur_time_in_secs():
     # Finds the exact time the bot starts and turns the hours, minutes, and seconds into integers
     today_datetime = str(datetime.now())
     cur_hour = int(today_datetime[11:13])
@@ -50,13 +51,15 @@ def get_time_until_midnight():
     # Converts current time into seconds to be able to countdown until midnight
     cur_time_in_secs = (((cur_hour * 60) + (cur_min)) * 60) + cur_sec
 
-    # Finds hours, mins, and secs until midnight and stores it in a time object
-    FULL_DAY = 86400
-    until_midnight = FULL_DAY - cur_time_in_secs
+    return cur_time_in_secs
 
-    return until_midnight
+# Finds hours, mins, and secs until midnight
+until_midnight = FULL_DAY - get_cur_time_in_secs()
 
-# Discord - Birthday interaction
+# Finds hours, mins, and secs until 8AM
+MORNING = 28800
+until_morning = (MORNING + FULL_DAY) - get_cur_time_in_secs()
+test_time = datetime.now() + timedelta(0, until_morning)
 
 
 @client.event
@@ -64,7 +67,7 @@ async def on_ready():
     print(f'We have logged in as {client.user}')
     channel = client.get_channel(1050913970204192848)
     await channel.send('Birthday Bot Online!')
-    await asyncio.sleep(get_time_until_midnight())
+    await asyncio.sleep(until_midnight)
     nightly.start()
 
 
@@ -102,7 +105,6 @@ async def on_message(message):
     if message.content.startswith('!tomorrow'):
         await message.channel.send(get_tomorrow())
 
-
 @tasks.loop(hours=24)
 async def nightly():
     channel = client.get_channel(1050882015848824845)
@@ -131,11 +133,19 @@ def get_yesterday():
 
 
 def get_tomorrow():
-    # Gates tomorrow based on the time shift at midnight
+    # Gets tomorrow based on the time shift at midnight
     tomorrow = date.today() + timedelta(days=1)
     tomorrow = str(tomorrow)
     tomorrow = tomorrow[5:7] + '/' + tomorrow[8:10]
     return tomorrow
 
+@tasks.loop(hours=24)
+async def get_morning():
+    channel = client.get_channel(1050882015848824845)
+    # Randomly selects a 'Good Morning!' from mornings and sends it to the channel
+    mornings = ['Good Morning!', 'Bonjour!', '¡Buenos Días!', 'Buongiorno!', 'Guten Morgen!', 'Goede Morgen!', '안녕하세요!', 'おはよう！', 'Доброе утро!', '早上好！']
+    picker = random.randint(0, len(mornings)-1)
+
+    await channel.send(mornings[picker])
 
 client.run(SECRET)
