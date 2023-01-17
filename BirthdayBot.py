@@ -144,7 +144,7 @@ def get_tomorrow():
 async def get_morning():
     channel = client.get_channel(1050882015848824845)
     # Randomly selects a 'Good Morning!' from mornings and sends it to the channel
-    mornings = ['Good Morning!', 'Bonjour!', '¡Buenos Días!', 'Buongiorno!', 'Guten Morgen!', 'Goede Morgen!', '안녕하세요!', 'おはよう！', 'Доброе утро!', '早上好！']
+    mornings = ['Good Morning!', 'Bonjour!', '¡Buenos Días!', 'Buongiorno!', 'Guten Morgen!', 'Goede Morgen!', '안녕하세요!', 'おはよう！', 'Доброе утро!', '早上好', 'Jó Reggelt Kívánok!']
     picker = random.randint(0, len(mornings)-1)
 
     await channel.send(mornings[picker])
