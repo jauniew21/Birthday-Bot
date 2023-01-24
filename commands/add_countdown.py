@@ -26,11 +26,19 @@ async def countdown(message, guild, birthdays):
 
     try:
         # Sending a nice embed
-        embed = discord.Embed(title=f'{user.name}\'s birthday', colour=discord.Colour.magenta())
+        birthday_today = days_until_birthday(id_, birthdays) == 0
 
-        embed.add_field(name= 'Date: ', value= date_format_to_english(the_date), inline= False)
-        embed.add_field(name= 'Days Away: ', value= f'{days_until_birthday(id_, birthdays)} days', inline= True)
-        embed.add_field(name= 'Days Ago: ', value= f'{days_until_birthday(id_, birthdays, True)} days', inline= True)
+        if not birthday_today:
+            embed = discord.Embed(title=f'{user.name}\'s birthday', colour=discord.Colour.magenta())
+            embed.add_field(name= 'Date: ', value= date_format_to_english(the_date), inline= False)
+            embed.add_field(name= 'Days Away: ', value= f'{days_until_birthday(id_, birthdays)} days', inline= True)
+            embed.add_field(name= 'Days Ago: ', value= f'{days_until_birthday(id_, birthdays, True)} days', inline= True)
+
+        if birthday_today:
+            embed = discord.Embed(title=f'It\'s {user.name}\'s birthday today! 🎂', colour=discord.Colour.magenta())
+            embed.add_field(name= 'Date: ', value= date_format_to_english(the_date), inline= False)
+            embed.set_image(url="https://media2.giphy.com/media/g5R9dok94mrIvplmZd/giphy.gif?cid=ecf05e479rwppp26ecors3ce9mq7go5wypfn0jf13z0jrr4e&rid=giphy.gif&ct=g")
+
 
         await message.channel.send(embed=embed)
         #await message.channel.send(f'{user.mention}\'s birthday is {days_until_birthday(id_, birthdays)} days away (or {days_until_birthday(id_, birthdays, True)} days ago) on {date_format_to_english(the_date)}')
