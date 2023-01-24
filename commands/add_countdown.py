@@ -1,4 +1,4 @@
-from utils import days_until_birthday, date_format_to_english
+from utils import days_until_birthday, date_format_to_english, get_random_birthday_gif
 import discord
 
 
@@ -37,7 +37,7 @@ async def countdown(message, guild, birthdays):
         if birthday_today:
             embed = discord.Embed(title=f'It\'s {user.name}\'s birthday today! 🎂', colour=discord.Colour.magenta())
             embed.add_field(name= 'Date: ', value= date_format_to_english(the_date), inline= False)
-            embed.set_image(url="https://media2.giphy.com/media/g5R9dok94mrIvplmZd/giphy.gif?cid=ecf05e479rwppp26ecors3ce9mq7go5wypfn0jf13z0jrr4e&rid=giphy.gif&ct=g")
+            embed.set_image(url=f'{get_random_birthday_gif()}')
 
 
         await message.channel.send(embed=embed)
