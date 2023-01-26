@@ -1,5 +1,5 @@
 from datetime import date, timedelta
-
+import random
 
 def days_until_birthday(user, birthdays, reversed=False):
     days_until = 0
@@ -39,3 +39,14 @@ def date_format_to_english(date):
         day = day.replace('0', '')
 
     return f"{months[int(month) - 1]} {day}"
+
+def get_random_birthday_gif():
+    birthday_gifs = ['https://media.giphy.com/media/g5R9dok94mrIvplmZd/giphy.gif',
+                     'https://media.giphy.com/media/jCz1AWFI4SnRzCmj9l/giphy.gif',
+                     'https://media.giphy.com/media/66dLOWrLqrgxWHSeVR/giphy.gif',
+                     'https://media.giphy.com/media/onPMdPD9wI4rWA6KaT/giphy.gif',
+                     'https://media.giphy.com/media/3o6MbhgBx0MaN0nOr6/giphy.gif',
+                     'https://media.giphy.com/media/WRL7YgP42OKns22wRD/giphy.gif',
+                     'https://media.giphy.com/media/WRL7YgP42OKns22wRD/giphy.gif']
+
+    return random.choice(birthday_gifs)
