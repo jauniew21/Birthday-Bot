@@ -58,8 +58,9 @@ until_midnight = FULL_DAY - get_cur_time_in_secs()
 
 # Finds hours, mins, and secs until 8AM
 MORNING = 28800
-# until_morning = (MORNING + FULL_DAY) - get_cur_time_in_secs()
 
+# Keeps track of the last 'Good Morning!' sent with get_morning()
+last_morning = ''
 
 @client.event
 async def on_ready():
@@ -143,10 +144,18 @@ def get_tomorrow():
 @tasks.loop(hours=24)
 async def get_morning():
     channel = client.get_channel(1050882015848824845)
+    global last_morning
+
     # Randomly selects a 'Good Morning!' from mornings and sends it to the channel
-    mornings = ['Good Morning!', 'Bonjour!', '¡Buenos Días!', 'Buongiorno!', 'Guten Morgen!', 'Goede Morgen!', '안녕하세요!', 'おはよう！', 'Доброе утро!', '早上好', 'Jó Reggelt Kívánok!']
+    mornings = ['Good Morning!', 'Bonjour!', '¡Buenos Días!', 'Buongiorno!', 'Guten Morgen!', 
+    'Goede Morgen!', '안녕하세요!', 'おはよう！', 'Доброе утро!', '早上好!', 'Jó Reggelt Kívánok!',
+    'Добрий ранок!']
     picker = random.randint(0, len(mornings)-1)
 
+    while (mornings[picker] == last_morning):
+        picker = random.randint(0, len(mornings)-1)
+
+    last_morning = mornings[picker]
     await channel.send(mornings[picker])
 
 client.run(SECRET)
