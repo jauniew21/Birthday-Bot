@@ -21,5 +21,7 @@ async def get_next(guild, message, birthdays):
     lowest_day_as_date = lowest_day_as_date[5:7] + \
         '/' + lowest_day_as_date[8:10]
 
-    user = guild.get_member(found_birthday[1])
-    await message.channel.send(f'{user.name}\'s birthday is next, which is {days_until_birthday(found_birthday[1], birthdays)} days away on {date_format_to_english(lowest_day_as_date)}')
+    for birthday in birthdays:
+        if birthday[0] == found_birthday[0]:
+            user = guild.get_member(birthday[1])
+            await message.channel.send(f'{user.name}\'s birthday is next, which is {days_until_birthday(found_birthday[1], birthdays)} days away on {date_format_to_english(lowest_day_as_date)}')
