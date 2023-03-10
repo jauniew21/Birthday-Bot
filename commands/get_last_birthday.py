@@ -13,17 +13,26 @@ async def get_last(guild, message, birthdays):
             continue
 
         highest_day = cur_count
-        that_user = birthday[1]
         found_birthday = birthday
-
-    if found_birthday is None:
-        await message.channel.send(f'You have no friends, and therefore no birthdays!')
-        return
 
     # Now sends a message for every birthday on the highest day
     highest_day_as_date = str(date.today() + timedelta(days=highest_day))
     highest_day_as_date = highest_day_as_date[5:7] + \
         '/' + highest_day_as_date[8:10]
+    
+    # Prepares a message that contains every user on the next birthday
+    births_that_day = []
+    full_message = ''
 
-    user = guild.get_member(that_user)
-    await message.channel.send(f'{user.name}\'s birthday was last, which was {days_until_birthday(that_user, birthdays, True)} days ago on {date_format_to_english(highest_day_as_date)}')
+    # Creates a list of users that share the next birthday
+    for birthday in birthdays:
+        if birthday[0] == found_birthday[0]:
+            user = guild.get_member(birthday[1])
+            births_that_day.append(user)
+
+    # Sends a message to the chat with all the birthdays in the list
+    while len(births_that_day) > 1:
+        full_message += f'{births_that_day[0].name} & '
+        del births_that_day[0]
+
+    await message.channel.send(f'{full_message}{births_that_day[0].name}\'s birthday was last, which was {days_until_birthday(found_birthday[1], birthdays, True)} days ago on {date_format_to_english(highest_day_as_date)}')

@@ -13,8 +13,7 @@ def days_until_birthday(user, birthdays, reversed=False):
     day = day[5:7] + '/' + day[8:10]
     while day != birthday:
         days_until += 1
-        day_acc = day_acc + \
-            timedelta(days=1) if not reversed else day_acc - timedelta(days=1)
+        day_acc = day_acc + timedelta(days=1) if not reversed else day_acc - timedelta(days=1)
         day = str(day_acc)
         day = day[5:7] + '/' + day[8:10]
 
