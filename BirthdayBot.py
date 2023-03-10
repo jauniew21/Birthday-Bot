@@ -67,10 +67,14 @@ async def on_ready():
     print(f'We have logged in as {client.user}')
     channel = client.get_channel(1050913970204192848)
     await channel.send('Birthday Bot Online!')
-    await asyncio.sleep(until_midnight)
-    nightly.start()
-    await asyncio.sleep(MORNING)
-    get_morning.start()
+    # The daily birthday check at midnight
+    if not nightly.is_running():
+        await asyncio.sleep(until_midnight)
+        nightly.start()
+    # The daily morning message at 8 AM
+    if not get_morning.is_running():
+        await asyncio.sleep(MORNING)
+        get_morning.start()
 
 
 @client.event
