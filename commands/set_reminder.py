@@ -43,7 +43,7 @@ async def set_reminder(guild, message):
         units = 's'
 
     # validating unit of time
-    if units != 's' or units != 'm' or units != 'h':
+    if units != 's' and units != 'm' and units != 'h':
         await message.channel.send(f'I don\'t know that time measurement :(')
         return
     
