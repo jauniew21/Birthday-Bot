@@ -4,6 +4,7 @@ from commands.add_countdown import countdown
 from commands.get_birthday_list import birth_list
 from commands.get_next_birthday import get_next
 from commands.get_last_birthday import get_last
+from commands.set_reminder import set_reminder
 from commands.print_help import print_help
 import datetime
 import discord
@@ -28,7 +29,7 @@ def get_birthdays():
     # Filling Birthdays
     for line in range(len(content)):
         birthdays.append(content[line].strip().split(', '))
-    event_file.close()
+    # event_file.close()
 
     for x in range(len(birthdays)):
         birthdays[x][1] = int(birthdays[x][1])
@@ -89,6 +90,9 @@ async def on_message(message):
 
     if message.content.startswith('!add '):
         await add_birthday(message, guild, birthdays)
+    
+    if message.content == ('!add'):
+        await message.channel.send('You\'re missing some parameters, call !help for more information.')
 
     if message.content == ('!birth list'):
         await birth_list(birthdays, guild, message)
@@ -101,6 +105,12 @@ async def on_message(message):
 
     if message.content == ('!next'):
         await get_next(guild, message, birthdays)
+
+    if message.content.startswith('!remind '):
+        await set_reminder(guild, message)
+
+    if message.content == ('!remind'):
+        await message.channel.send('You\'re missing some parameters, call !help for more information.')
 
     if message.content.startswith('!yesterday'):
         await message.channel.send(get_yesterday())
