@@ -20,6 +20,7 @@ intents.members = True
 
 client = discord.Client(intents=intents)
 
+birthdays = []
 FULL_DAY = 86400
 
 def get_cur_time_in_secs():
