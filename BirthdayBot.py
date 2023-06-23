@@ -6,6 +6,7 @@ from commands.get_next_birthday import get_next
 from commands.get_last_birthday import get_last
 from commands.set_reminder import set_reminder
 from commands.print_help import print_help
+from commands.maintain_birth_list import get_birthdays
 import datetime
 import discord
 from datetime import date, datetime, timedelta
@@ -20,27 +21,6 @@ intents.members = True
 client = discord.Client(intents=intents)
 
 FULL_DAY = 86400
-
-def get_birthdays():
-    event_file = open('events.txt', 'r')
-    content = event_file.readlines()
-    birthdays = []
-
-    # Filling Birthdays
-    for line in range(len(content)):
-        birthdays.append(content[line].strip().split(', '))
-    # event_file.close()
-
-    for x in range(len(birthdays)):
-        birthdays[x][1] = int(birthdays[x][1])
-
-    event_file.close()
-    birthdays.sort()
-
-    return birthdays
-
-
-birthdays = get_birthdays()
 
 def get_cur_time_in_secs():
     # Finds the exact time the bot starts and turns the hours, minutes, and seconds into integers
@@ -81,6 +61,7 @@ async def on_ready():
 @client.event
 async def on_message(message):
     guild = client.get_guild(GUILD)
+    birthdays = get_birthdays(guild)
 
     if message.author == client.user:
         return
@@ -120,6 +101,9 @@ async def on_message(message):
 
     if message.content.startswith('!tomorrow'):
         await message.channel.send(get_tomorrow())
+    
+    if message.content.startswith('!bl'):
+        await message.channel.send(birthdays)
 
 @tasks.loop(hours=24)
 async def nightly():
