@@ -12,6 +12,7 @@ import discord
 from datetime import date, datetime, timedelta
 from discord.ext import tasks
 import random
+from urllib.request import urlopen
 from secret import GUILD, SECRET
 # Discord Bot Basics
 intents = discord.Intents.default()
@@ -102,9 +103,6 @@ async def on_message(message):
 
     if message.content.startswith('!tomorrow'):
         await message.channel.send(get_tomorrow())
-    
-    if message.content.startswith('!bl'):
-        await message.channel.send(birthdays)
 
 @tasks.loop(hours=24)
 async def nightly():
@@ -159,7 +157,23 @@ async def get_morning():
     while (mornings[picker] == last_morning):
         picker = random.randint(0, len(mornings)-1)
 
+    # Grabs the Word of the Day from Merriam-Webster
+    url = "https://www.merriam-webster.com/word-of-the-day"
+    page = urlopen(url)
+    html = page.read().decode("utf-8")
+
+    title_i = html.find("<title>")
+    start_i = title_i + len("<title>")
+    end_i = html.find("</title>")
+    title = html[start_i:end_i]
+    end_of_word = title.index("|")
+    word = title[17:end_of_word]
+    funny_little_sentence = 'Example of *' + word + '* being used in a sentence: This is ' \
+        + word + 'being used in a sentence.'
+
     last_morning = mornings[picker]
-    await channel.send(mornings[picker])
+
+    morning_message = mornings[picker] + '\n' + title + '\n' + funny_little_sentence
+    await channel.send(morning_message)
 
 client.run(SECRET)
