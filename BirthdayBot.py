@@ -167,9 +167,9 @@ async def get_morning():
     end_i = html.find("</title>")
     title = html[start_i:end_i]
     end_of_word = title.index("|")
-    word = title[17:end_of_word]
+    word = title[17:end_of_word-1]
     funny_little_sentence = 'Example of *' + word + '* being used in a sentence: This is ' \
-        + word + 'being used in a sentence.'
+        + word + ' being used in a sentence.'
 
     last_morning = mornings[picker]
 
