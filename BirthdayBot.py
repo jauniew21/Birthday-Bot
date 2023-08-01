@@ -162,18 +162,32 @@ async def get_morning():
     page = urlopen(url)
     html = page.read().decode("utf-8")
 
+    # The word itself is in the <title> portion of the html
+    # So the title is webscraped and parsed to only have the word
     title_i = html.find("<title>")
     start_i = title_i + len("<title>")
     end_i = html.find("</title>")
     title = html[start_i:end_i]
-    end_of_word = title.index("|")
-    word = title[17:end_of_word-1]
-    funny_little_sentence = 'Example of *' + word + '* being used in a sentence: This is ' \
-        + word + ' being used in a sentence.'
+    # Next two lines get the word without mentioning Merriam Webster
+    # end_of_word = title.index("|")
+    # word = title[17:end_of_word-1]
+    
+    # Now to get the definition nested from the first paragraph in the <p> tag
+    def_index = html.find("<p>")
+    def_start_index = def_index + len("<p>")
+    def_end_index = html.find("</p>")
+    definition = html[def_start_index:def_end_index]
 
+    # And remove any HTML tags in the definition
+    while "<" in definition:
+        open_index = definition.find("<")
+        close_index = definition.find(">")
+        definition = definition[:open_index] + definition[close_index + 1:]
+
+    definition = "Definition: " + definition
     last_morning = mornings[picker]
 
-    morning_message = mornings[picker] + '\n' + title + '\n' + funny_little_sentence
+    morning_message = mornings[picker] + '\n' + title + '\n' + '\n' + definition
     await channel.send(morning_message)
 
 client.run(SECRET)
