@@ -107,15 +107,15 @@ async def on_message(message):
 @tasks.loop(hours=24)
 async def nightly():
     channel = client.get_channel(1050882015848824845)
+    guild = client.get_guild(GUILD)
+    birthdays = get_birthdays(guild)
 
     for birthday in birthdays:
         if birthday[0] == get_today():
-            guild = client.get_guild(GUILD)
             user = guild.get_member(birthday[1])
             await channel.send('Happy Birthday ' + user.mention + '!')
         # Wishing Feb 29th birthdays a happy birthday if it is not a leap year
         elif birthday[0] == '02/29' and get_yesterday() == '02/28':
-            guild = client.get_guild(GUILD)
             user = guild.get_member(birthday[1])
             await channel.send('Happy (kind of) Birthday ' + user.mention + '!')
 
